@@ -5,18 +5,21 @@
 #include <cstring>
 #include <conio.h>
 #include <vector>
+#include<cmath>
 
 class Processing
 {
     private:
-        std:: vector<int> values_;
+        std:: vector<int> gsr_values_;
         std:: vector<int> times_;
-        std:: ifstream data_file_;  
+        std:: ifstream data_file_;
+
+        std:: vector<int> eda_values_;  
     public:
         Processing();
         explicit Processing(const char *name);
         ~Processing();
-        void convert_gsr();
+        void convert_to_eda();
         void signal_filtration();
         void signal_normalization();
         static double mean();

@@ -23,24 +23,36 @@ Processing::Processing(const char *name) // constructor 2
             if (count != 0)
             {
                 times_.push_back(stoi(time));
-                values_.push_back(stoi(value));
+                gsr_values_.push_back(stoi(value));
             }
             count++;
         }    
     }
 
     data_file_.close();
+    convert_to_eda();
 }
 Processing::~Processing() // destructor
 {
     
 }
-void Processing::convert_gsr()
+void Processing::convert_to_eda()
 {
+    int temp;
+    int ten_power = pow(10.0, 5.0);
+
+    for (int i = 0; i < gsr_values_.size(); i++)
+    {
+        temp = ten_power/gsr_values_[i];
+        std:: cout << temp << std::endl;
+        eda_values_.push_back(temp);
+    }
 
 }
 void Processing::signal_filtration()
 {
+
+
 
 }
 void Processing::signal_normalization()
@@ -56,9 +68,9 @@ void Processing::trough_to_peak()
 {
     
 }
-std::ostream &operator<<(std::ostream &os, const std::vector<int> &values_)
+std::ostream &operator<<(std::ostream &os, const std::vector<double> &values)
 {
-    for (auto const &i: values_) {
+    for (auto const &i: values) {
         os << i << " ";
     }
     return os;
@@ -66,6 +78,5 @@ std::ostream &operator<<(std::ostream &os, const std::vector<int> &values_)
 void Processing::print()
 {
 
-std:: cout << values_[0] << std::endl;
-
+std:: cout << eda_values_[0] << std::endl;
 }
