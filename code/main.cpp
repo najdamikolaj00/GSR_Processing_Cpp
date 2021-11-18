@@ -6,8 +6,7 @@
 int main()
 {
     Processing object("gsr_samples.csv");
-    object.print();
+    object.save_to_csv();
 
-    
     return 0;
 }

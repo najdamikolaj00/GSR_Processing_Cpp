@@ -6,15 +6,18 @@
 #include <conio.h>
 #include <vector>
 #include<cmath>
+#include<algorithm>
 
 class Processing
 {
     private:
-        std:: vector<int> gsr_values_;
+        std:: vector<float> gsr_values_;
         std:: vector<int> times_;
         std:: ifstream data_file_;
 
-        std:: vector<int> eda_values_;  
+        std:: vector<float> eda_values_;
+        std:: vector<float> eda_values_filtered_; 
+        std:: vector<float> eda_values_normalized_;  
     public:
         Processing();
         explicit Processing(const char *name);
@@ -23,6 +26,7 @@ class Processing
         void signal_filtration();
         void signal_normalization();
         static double mean();
+        void save_to_csv();
         void trough_to_peak();
         void print();
 };

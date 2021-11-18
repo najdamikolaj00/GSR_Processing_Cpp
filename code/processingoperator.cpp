@@ -31,6 +31,8 @@ Processing::Processing(const char *name) // constructor 2
 
     data_file_.close();
     convert_to_eda();
+    signal_filtration();
+    signal_normalization();
 }
 Processing::~Processing() // destructor
 {
@@ -38,31 +40,71 @@ Processing::~Processing() // destructor
 }
 void Processing::convert_to_eda()
 {
-    int temp;
-    int ten_power = pow(10.0, 5.0);
+    float temp;
+    float ten_power = pow(10.0, 5.0);
 
     for (int i = 0; i < gsr_values_.size(); i++)
     {
         temp = ten_power/gsr_values_[i];
-        std:: cout << temp << std::endl;
         eda_values_.push_back(temp);
     }
+    
 
 }
 void Processing::signal_filtration()
 {
+    //filtration by moving average, because of time series 
+    float k{3};//default = 3.
+    float tmp_1{0};
+    float tmp_2{0};
 
-
-
+    for (int i = 0; i < eda_values_.size() - 1; i++)
+    {
+        for (int j = 0; j < k; j++)
+        {
+            tmp_2 += eda_values_[j];
+        }
+        tmp_1 = (tmp_2/k)/eda_values_.size();
+        eda_values_filtered_.push_back(tmp_1);
+        tmp_2 = 0;
+        tmp_1 = 0;
+    }
 }
 void Processing::signal_normalization()
 {
 
+    std:: vector<float>::iterator min_value;
+    std:: vector<float>::iterator max_value;
+
+    min_value = std::min_element(eda_values_.begin(),eda_values_.end());
+    max_value = std::max_element(eda_values_.begin(),eda_values_.end());
+
+    float tmp{0};
+
+    for (int i = 0; i < eda_values_.size(); i++)
+    {   
+        tmp = (eda_values_filtered_[i] - min_value[0])/(max_value[0] - min_value[0]);
+        eda_values_normalized_.push_back(tmp);
+    }
+    
 }
 double Processing::mean()
 {
 
     return 0;
+}
+void Processing::save_to_csv()
+{
+
+    std:: ofstream outFile;
+    outFile.open("eda_signal_normalized.csv", std::ios_base::app);
+    for (int i = 0; i < eda_values_.size(); i++)
+    {
+        outFile << eda_values_normalized_[i] << "," << times_[i] << std::endl;
+    }
+    outFile.close();
+
+
 }
 void Processing::trough_to_peak()
 {
