@@ -17,7 +17,11 @@ class Processing
 
         std:: vector<float> eda_values_;
         std:: vector<float> eda_values_filtered_; 
-        std:: vector<float> eda_values_normalized_;  
+        std:: vector<float> eda_values_normalized_;
+
+        std:: vector<float> diff_frame_;
+        std:: vector<float> trough_to_peak_values_; 
+        std:: vector<float> trough_to_peak_indices_;
     public:
         Processing();
         explicit Processing(const char *name);
