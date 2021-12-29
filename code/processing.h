@@ -31,7 +31,6 @@ class Processing
         void signal_normalization();
         static double mean();
         void save_to_csv();
-        void trough_to_peak();
         void print();
 };
 #endif

@@ -86,57 +86,11 @@ void Processing::signal_normalization()
         tmp = (eda_values_filtered_[i] - min_value[0])/(max_value[0] - min_value[0]);
         eda_values_normalized_.push_back(tmp);
     }
-    trough_to_peak();
 }
 double Processing::mean()
 {
 
     return 0;
-}
-void Processing::trough_to_peak()
-{
-    std::vector<float> frame_1;
-    std::vector<float> frame_2;
-
-    std:: vector<float>::iterator max_value_frame_1;
-    std:: vector<float>::iterator max_value_frame_2;
-
-    float tmp{0};
-
-    for (int j = 0; j < eda_values_normalized_.size(); j+=10)
-    {
-        for (int i = 0; i < 20; i++) 
-        {
-            if ((j + 40) < eda_values_normalized_.size())
-            {
-                frame_1.push_back(eda_values_normalized_[j + i]);
-                frame_2.push_back(eda_values_normalized_[j + i + 20]);
-            }
-        }
-        if (j % 10 == 0)
-        {
-            max_value_frame_1 = std::max_element(frame_1.begin(),frame_1.end());
-            max_value_frame_2 = std::max_element(frame_2.begin(),frame_2.end());
-            diff_frame_.push_back(max_value_frame_2[0] - max_value_frame_1[0]);
-            frame_1.clear();
-            frame_2.clear();
-        }
-    }
-    for (int i = 0; i < diff_frame_.size(); i++)
-    {
-        if (diff_frame_[i] > 0.2) 
-        {
-            trough_to_peak_values_.push_back(diff_frame_[i]);
-            trough_to_peak_indices_.push_back(i * 10);
-        }
-    }
-    std:: ofstream outFile;
-    outFile.open("trough_to_peak.csv", std::ios_base::app);
-    for (int i = 0; i < trough_to_peak_values_.size(); i++)
-    {
-        outFile << trough_to_peak_values_[i] <<"," << trough_to_peak_indices_[i] << std::endl;
-    }
-    outFile.close();
 }
 void Processing::save_to_csv()
 {
